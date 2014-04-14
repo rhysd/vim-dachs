@@ -3,7 +3,7 @@
 " endif
 syntax clear
 
-syn cluster dachsNotTop contains=dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes
+syn cluster dachsNotTop contains=dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
@@ -27,10 +27,10 @@ syn match dachsOperator "[~!^&|*/%:+-]\|<=\|>=\|==\|<<\|>>\|:=\|=\|\.\.\.\|\.\."
 syn match dachsOperator "-=\|/=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!=\|\^=" display
 
 " Control
-syn match  dachsControl "\<\%(return\|next\|break\|as\)\>[?!']\@!" display
-syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<case[?!']\@!\>" end="\<end\>" contains=ALLBUT,@dachsNotTop fold
+syn match  dachsControl "\<\%(return\|next\|break\|as\)\>[?!']\@!" contained display
+syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<case[?!']\@!\>" end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|when\)\>[?!']\@!" contained containedin=dachsCaseExpression display
-syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contains=ALLBUT,@dachsNotTop fold
+syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|elseif\)\>[?!']\@!" contained containedin=dachsIfStatement
 " XXX: Only one-liner if expression is highlighted
 syn region dachsIfExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>" end="$"
@@ -40,6 +40,9 @@ syn region dachsRepeatExpression start="\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!" ma
 syn match  dachsOptionalDo "\<in\>[?!']\@!" contained containedin=dachsOptionalDoLine display
 
 " Initialize
+syn match dachsInitialize "\%(\%(^\|;\)\s*\)\@<=\%(\<var[?!']\@!\s\+\)\=[_[:alnum:], ]\+\s\+:=" contained contains=ALLBUT,@dachsNotTop transparent
+syn match dachsInitializeVarName "\<[_[:alpha:]][_[:alnum:]]*\>" contained containedin=dachsInitialize display
+syn match dachsInitializeVar "\<var\>" contained containedin=dachsInitialize display
 
 " Comment
 syn match   dachsSharpBang "\%^#!.*" display
@@ -66,9 +69,10 @@ hi def link dachsStringDelimiter    Delimiter
 hi def link dachsString             String
 hi def link dachsType               Type
 hi def link dachsBuiltinTypes       dachsType
-hi def link dachsTypeSigns          dachsType
 hi def link dachsConditional        Conditional
 hi def link dachsRepeat             Repeat
 hi def link dachsOptionalDo         rubyRepeat
+hi def link dachsInitializeVar      Type
+hi def link dachsInitializeVarName  Identifier
 
 let b:current_syntax = "dachs"
