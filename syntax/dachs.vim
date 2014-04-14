@@ -1,6 +1,7 @@
-if exists("b:current_syntax")
-  finish
-endif
+" if exists("b:current_syntax")
+"   finish
+" endif
+syntax clear
 
 syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName
 
@@ -37,10 +38,11 @@ syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s
 syn match  dachsConditional "\<\%(then\|else\|when\)\>[?!']\@!" contained containedin=dachsCaseExpression display
 syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|elseif\)\>[?!']\@!" contained containedin=dachsIfStatement
-" XXX: Only one-liner if expression is highlighted
-syn region dachsIfExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>" end="$"
-syn match  dachsConditional "\<\%(then\|else\)\>[?!']\@!" contained containedin=dachsIfExpression display
-syn region dachsOptionalDoLine   matchgroup=dachsRepeat start="\<for\>[?!']\@!" matchgroup=dachsOptionalDo end="\<do\>" end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop
+" syn region dachsIfExprThen matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>[?!']\@!" matchgroup=dachsConditional end="\<then[!?']\@!\>" end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop nextgroup=dachsIfExprElse skipwhite
+" syn region dachsIfExprElse start="\%(\<then\>\)\@<=" matchgroup=dachsConditional end="\<else\>" contained containedin=NONE contains=ALLBUT,@dachsNotTop
+syn region dachsIfThenOneLine matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>[?!']\@!" matchgroup=dachsConditional end="\<then\>" end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop
+syn region dachsIfExpression start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>[?!']\@!" matchgroup=dachsConditional end="\<else\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsIfThenOneLine
+syn region dachsOptionalDoLine matchgroup=dachsRepeat start="\<for\>[?!']\@!" matchgroup=dachsOptionalDo end="\<do\>" end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop
 syn region dachsRepeatExpression start="\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsOptionalDoLine fold
 syn match  dachsOptionalDo "\<in\>[?!']\@!" contained containedin=dachsOptionalDoLine display
 
