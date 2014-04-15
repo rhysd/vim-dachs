@@ -1,7 +1,6 @@
-" if exists("b:current_syntax")
-"   finish
-" endif
-syntax clear
+if exists("b:current_syntax")
+  finish
+endif
 
 syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse
 
