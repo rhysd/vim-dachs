@@ -71,6 +71,7 @@ hi def link dachsTodo               Todo
 hi def link dachsControl            Statement
 hi def link dachsFuncDefine         Define
 hi def link dachsFuncId             Function
+hi def link dachsCharacterEscape    Special
 hi def link dachsCharacter          Character
 hi def link dachsStringEscape       Special
 hi def link dachsStringDelimiter    Delimiter
