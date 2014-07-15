@@ -55,7 +55,7 @@ syn match   dachsComment "#[^#]*#\=" contains=dachsSharpBang,dachsTodo,@Spell di
 
 " Type
 syn match dachsTypeLeader "\%(\%(:\|as\)\s\+\)\@<=.*" contained contains=ALLBUT,@dachsNotTop transparent
-syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\)\>[!']\@!" contained contains=NONE containedin=dachsTypeLeader display
+syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\)\>[!']\@!" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" contained contains=NONE containedin=dachsTypeLeader display
 
 let g:dachs_highlight_minlines = get(g:, 'dachs_highlight_minlines', 500)
