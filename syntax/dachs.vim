@@ -32,7 +32,7 @@ if exists('g:dachs_highlight_operators')
 endif
 
 " Control
-syn match  dachsControl "\<\%(return\|next\|break\|as\)\>[?!']\@!" contained display
+syn match  dachsControl "\<\%(ret\|next\|break\|as\)\>[?!']\@!" contained display
 syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<case[?!']\@!\>" end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|when\)\>[?!']\@!" contained containedin=dachsCaseExpression display
 syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
