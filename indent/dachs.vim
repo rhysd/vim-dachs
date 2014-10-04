@@ -19,7 +19,7 @@ let s:syn_group_skip
             \ = '\<dachs\%(StringEscape\|StringSpecial\|StringDelimiter\|String\|SharpBang\|Comment\)\>'
 
 let s:syn_group_indent
-            \ = '^\s*\zs\<\%(func\|proc\|if\|for\|else\|elseif\|case\|when\|unless\|begin\|ensure\)\>'
+            \ = '\%(^\s*\zs\<\%(func\|proc\|if\|for\|else\|elseif\|case\|when\|unless\|begin\|ensure\)\>\|\<do\>\%(\s*|[^|]\+|\)\=\_$\)'
 
 let s:syn_group_undent
             \ = '^\s*\zs\<\%(end\|else\|elseif\|when\|ensure\|begin\)\>'
