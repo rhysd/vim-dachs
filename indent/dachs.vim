@@ -1,11 +1,10 @@
 if exists('b:did_indent')
-  finish
+    finish
 endif
 
 setlocal nosmartindent
 setlocal indentexpr=GetDachsIndent(v:lnum)
-setlocal indentkeys=!^F,o,O
-setlocal indentkeys+==end,=else,=elseif,=when,=ensure,==begin,==end
+setlocal indentkeys=!^F,o,O,e,=end,=else,=elseif,0=when,0=ensure,0=begin
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -29,20 +28,35 @@ function! s:should_skip(lnum, col)
     return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
 endfunction
 
+let s:prev = -1
 function! GetDachsIndent(lnum)
     let prev_lnum = prevnonblank(a:lnum)
+    let prev_line = getline(prev_lnum)
 
-    let col = match(getline(a:lnum), '\C' . s:syn_group_undent) + 1
+    if getline('.') =~# '^\s*$'
+        let s:prev = -1
+
+        let col = match(prev_line, '\C' . s:syn_group_indent) + 1
+        if col > 0 && ! s:should_skip(prev_lnum, col)
+            return indent(prev_lnum) + &l:shiftwidth
+        endif
+
+        let col = match(prev_line, '\C' . s:syn_group_undent) + 1
+        if col > 0 && ! s:should_skip(a:lnum, col)
+            return indent(prev_lnum)
+        endif
+    end
+
+    let col = match(getline('.'), '\C' . s:syn_group_undent) + 1
     if col > 0 && ! s:should_skip(a:lnum, col)
-        return indent(a:lnum) - &shiftwidth
+        if s:prev == v:lnum
+            return -1
+        endif
+        let s:prev = v:lnum
+        return indent(a:lnum) - &l:shiftwidth
     endif
 
-    let col = match(getline(prev_lnum), '\C' . s:syn_group_indent) + 1
-    if col > 0 && ! s:should_skip(prev_lnum, col)
-        return indent(a:lnum) + &shiftwidth
-    endif
-
-    return indent(a:lnum)
+    return -1
 endfunction
 
 let &cpo = s:save_cpo
