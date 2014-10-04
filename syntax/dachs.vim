@@ -39,11 +39,10 @@ syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)
 syn match  dachsConditional "\<\%(then\|else\|elseif\)\>[?!']\@!" contained containedin=dachsIfStatement display
 syn region dachsIfExprThen matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>[?!']\@!" matchgroup=dachsConditional end="\<then[!?']\@!\>" end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop nextgroup=dachsIfExprElse skipwhite
 syn region dachsIfExprElse start="\%(\<then\>\_s\+\)\@<=\zs" matchgroup=dachsConditional end="\<else\>" contained containedin=NONE contains=ALLBUT,@dachsNotTop
-syn region dachsForHeader matchgroup=dachsRepeat start="\<for\>[?!']\@!" matchgroup=dachsOptionalDo end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop
-syn region dachsRepeatExpression start="\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsForHeader fold
-syn match  dachsOptionalDo "\<in\>[?!']\@!" contained containedin=dachsForHeader display
+syn region dachsRepeatStatement matchgroup=dachsRepeat start="\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
+syn match dachsRepeatForIn "\%(\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!\%(.\%(\<in\>\)\@!\)*\s\)\@<=\<in\>" contained containedin=dachsRepeatStatement display
 syn region dachsDoBlock matchgroup=dachsControl start="\<do\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
-syn region dachsDoBlockParameterList start="\%(\<do\s*\)\@<=|" end="|" oneline display contains=dachsDoBlockParams
+syn region dachsDoBlockParameterList start="\%(\<do\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
 syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
 
 " Initialize
@@ -85,7 +84,7 @@ hi def link dachsType               Type
 hi def link dachsBuiltinTypes       dachsType
 hi def link dachsConditional        Conditional
 hi def link dachsRepeat             Repeat
-hi def link dachsOptionalDo         dachsRepeat
+hi def link dachsRepeatForIn        Repeat
 hi def link dachsInitializeVarName  Identifier
 
 let b:current_syntax = "dachs"
