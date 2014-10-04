@@ -2,11 +2,12 @@ if exists("b:current_syntax")
   finish
 endif
 
-syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse
+syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
 syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*'\=" contained contains=NONE display
+syn match dachsVar "\<var\>[?!']\@!"
 
 " Character
 syn match dachsCharacterEscape "\\[bfnr'\\]" contained display
@@ -32,7 +33,7 @@ if exists('g:dachs_highlight_operators')
 endif
 
 " Control
-syn match  dachsControl "\<\%(ret\|next\|break\|as\)\>[?!']\@!" contained display
+syn match  dachsControl "\<\%(ret\|next\|break\|as\|do\)\>[?!']\@!" contained display
 syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<case[?!']\@!\>" end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|when\)\>[?!']\@!" contained containedin=dachsCaseExpression display
 syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
@@ -42,11 +43,12 @@ syn region dachsIfExprElse start="\%(\<then\>\_s\+\)\@<=\zs" matchgroup=dachsCon
 syn region dachsForHeader matchgroup=dachsRepeat start="\<for\>[?!']\@!" matchgroup=dachsOptionalDo end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop
 syn region dachsRepeatExpression start="\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsForHeader fold
 syn match  dachsOptionalDo "\<in\>[?!']\@!" contained containedin=dachsForHeader display
+syn region dachsDoBlockHeader matchgroup=dachsControl start="\<do\>[?!']\@!" matchgroup=dachsParams end="\%(\s*|[^|]\+|\)\=\zs" contained contains=ALLBUT,@dachsNotTop
+syn region dachsDoBlock start="\<do\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsDoBlockHeader fold
 
 " Initialize
 syn match dachsInitialize "\%(\%(^\|;\)\s*\)\@<=\%(\<var[?!']\@!\s\+\)\=[_[:alnum:], ]\+\s\+:=" contained contains=ALLBUT,@dachsNotTop transparent
 syn match dachsInitializeVarName "\<[_[:alpha:]][_[:alnum:]]*\>" contained containedin=dachsInitialize display
-syn match dachsInitializeVar "\<var\>" contained containedin=dachsInitialize display
 
 " Comment
 syn match   dachsSharpBang "\%^#!.*" display
@@ -71,6 +73,7 @@ hi def link dachsTodo               Todo
 hi def link dachsControl            Statement
 hi def link dachsFuncDefine         Define
 hi def link dachsFuncId             Function
+hi def link dachsVar                Type
 hi def link dachsCharacterEscape    Special
 hi def link dachsCharacter          Character
 hi def link dachsStringEscape       Special
@@ -81,7 +84,6 @@ hi def link dachsBuiltinTypes       dachsType
 hi def link dachsConditional        Conditional
 hi def link dachsRepeat             Repeat
 hi def link dachsOptionalDo         dachsRepeat
-hi def link dachsInitializeVar      Type
 hi def link dachsInitializeVarName  Identifier
 
 let b:current_syntax = "dachs"
