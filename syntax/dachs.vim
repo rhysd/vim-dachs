@@ -2,12 +2,11 @@ if exists("b:current_syntax")
   finish
 endif
 
-syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader
+syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
 syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*'\=" contained contains=NONE display
-syn match dachsVar "\<var\>[?!']\@!"
 
 " Character
 syn match dachsCharacterEscape "\\[bfnr'\\]" contained display
@@ -43,12 +42,13 @@ syn region dachsIfExprElse start="\%(\<then\>\_s\+\)\@<=\zs" matchgroup=dachsCon
 syn region dachsForHeader matchgroup=dachsRepeat start="\<for\>[?!']\@!" matchgroup=dachsOptionalDo end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop
 syn region dachsRepeatExpression start="\%(\%(^\|;\)\s*\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsForHeader fold
 syn match  dachsOptionalDo "\<in\>[?!']\@!" contained containedin=dachsForHeader display
-syn region dachsDoBlockHeader matchgroup=dachsControl start="\<do\>[?!']\@!" matchgroup=dachsParams end="\%(\s*|[^|]\+|\)\=\zs" contained contains=ALLBUT,@dachsNotTop
-syn region dachsDoBlock start="\<do\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop nextgroup=dachsDoBlockHeader fold
+syn region dachsDoBlock matchgroup=dachsControl start="\<do\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
+syn region dachsDoBlockParameterList start="\%(\<do\s*\)\@<=|" end="|" oneline display contains=dachsDoBlockParams
+syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
 
 " Initialize
 syn match dachsInitialize "\%(\%(^\|;\)\s*\)\@<=\%(\<var[?!']\@!\s\+\)\=[_[:alnum:], ]\+\s\+:=" contained contains=ALLBUT,@dachsNotTop transparent
-syn match dachsInitializeVarName "\<[_[:alpha:]][_[:alnum:]]*\>" contained containedin=dachsInitialize display
+syn match dachsInitializeVarName "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsInitialize,dachsTypeLeader display
 
 " Comment
 syn match   dachsSharpBang "\%^#!.*" display
@@ -59,6 +59,7 @@ syn match   dachsComment "#[^#]*#\=" contains=dachsSharpBang,dachsTodo,@Spell di
 syn match dachsTypeLeader "\%(\%(:\|as\)\s\+\)\@<=.*" contained contains=ALLBUT,@dachsNotTop transparent
 syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\)\>[!']\@!" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" contained contains=NONE containedin=dachsTypeLeader display
+syn match dachsVar "\<var\>[?!']\@!"
 
 let g:dachs_highlight_minlines = get(g:, 'dachs_highlight_minlines', 500)
 exec "syn sync minlines=" . g:dachs_highlight_minlines
@@ -70,6 +71,7 @@ hi def link dachsOperator           Operator
 hi def link dachsSharpBang          PreProc
 hi def link dachsComment            Comment
 hi def link dachsTodo               Todo
+hi def link dachsDoBlockParams      Identifier
 hi def link dachsControl            Statement
 hi def link dachsFuncDefine         Define
 hi def link dachsFuncId             Function
