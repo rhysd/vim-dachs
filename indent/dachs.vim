@@ -4,7 +4,7 @@ endif
 
 setlocal nosmartindent
 setlocal indentexpr=GetDachsIndent(v:lnum)
-setlocal indentkeys=!^F,o,O,e,=end,=else,=elseif,0=when,0=ensure,0=begin
+setlocal indentkeys=!^F,o,O,e,=end,=else,=elseif,=in,0=when,0=ensure,0=begin
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -19,7 +19,7 @@ let s:syn_group_skip
             \ = '\<dachs\%(StringEscape\|StringSpecial\|StringDelimiter\|String\|SharpBang\|Comment\)\>'
 
 let s:syn_group_indent
-            \ = '\%(^\s*\zs\<\%(func\|proc\|if\|for\|else\|elseif\|case\|when\|unless\|begin\|ensure\)\>\|\<do\>\%(\s*|[^|]\+|\)\=\_$\)'
+            \ = '\%(^\s*\%(\<in\s\+\)\=\zs\<\%(func\|proc\|if\|for\|else\|elseif\|case\|when\|unless\|let\|begin\|ensure\)\>\|\<do\>\%(\s*|[^|]\+|\)\=\_$\)'
 
 let s:syn_group_undent
             \ = '^\s*\zs\<\%(end\|else\|elseif\|when\|ensure\|begin\)\>'
@@ -46,6 +46,15 @@ function! GetDachsIndent(lnum)
             return indent(prev_lnum)
         endif
     end
+
+    let col = match(getline('.'), '\C' . '\<in\s*$') + 1
+    if col > 0 && ! s:should_skip(a:lnum, col)
+        if s:prev == v:lnum
+            return -1
+        endif
+        let s:prev = v:lnum
+        return indent(a:lnum) - &l:shiftwidth
+    endif
 
     let col = match(getline('.'), '\C' . s:syn_group_undent) + 1
     if col > 0 && ! s:should_skip(a:lnum, col)
