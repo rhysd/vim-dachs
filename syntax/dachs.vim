@@ -42,7 +42,7 @@ syn region dachsIfExprElse start="\%(\<then\>\_s\+\)\@<=\zs" matchgroup=dachsCon
 syn region dachsRepeatStatement matchgroup=dachsRepeat start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match dachsRepeatForIn "\%(\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!\%(.\%(\<in\>\)\@!\)*\s\)\@<=\<in\>" contained containedin=dachsRepeatStatement display
 syn region dachsDoBlock matchgroup=dachsControl start="\<do\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
-syn region dachsDoBlockParameterList start="\%(\<do\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
+syn region dachsDoBlockParameterList start="\%(\%(\<do\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
 syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
 syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<in\>" contained contains=ALLBUT,@dachsNotTop
 
