@@ -2,7 +2,7 @@ if exists("b:current_syntax")
     finish
 endif
 
-syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams
+syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams,dachsNew
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
@@ -30,6 +30,8 @@ if exists('g:dachs_highlight_operators')
     syn match dachsOperator "[~!^&|*/%:<+-]\|=\@<!>\|<=\|>=\|==\|<<\|>>\|:=\|=\|\.\.\.\|\.\." display
     syn match dachsOperator "-=\|/=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!=\|\^=" display
 endif
+syn match dachsNew "\<new\>[?!']\@!" contained
+
 
 " Control
 syn match  dachsControl "\<\%(ret\|next\|break\|as\|do\)\>[?!']\@!" contained display
@@ -87,5 +89,6 @@ hi def link dachsConditional        Conditional
 hi def link dachsRepeat             Repeat
 hi def link dachsRepeatForIn        Repeat
 hi def link dachsInitializeVarName  Identifier
+hi def link dachsNew                Operator
 
 let b:current_syntax = "dachs"
