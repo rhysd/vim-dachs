@@ -47,6 +47,9 @@ syn region dachsDoBlock matchgroup=dachsControl start="\<do\>[?!']\@!" matchgrou
 syn region dachsDoBlockParameterList start="\%(\%(\<do\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
 syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
 syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<in\>" contained contains=ALLBUT,@dachsNotTop
+" syn region dachsLambdaOneLine matchgroup=dachsControl start="->" matchgroup=dachsControl end="\<in\>\|.\%(\<do\>\)\@=" oneline contained contains=ALLBUT,@dachsNotTop fold
+syn match dachsLambda "->" display
+syn match dachsLambdaIn "\%(->.\+\)\@<=\<in\>" display
 
 " Initialize
 syn match dachsInitialize "\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\%(\<var[?!']\@!\s\+\)\=[_[:alnum:], ]\+\s\+:=" contained contains=ALLBUT,@dachsNotTop transparent
@@ -90,5 +93,7 @@ hi def link dachsRepeat             Repeat
 hi def link dachsRepeatForIn        Repeat
 hi def link dachsInitializeVarName  Identifier
 hi def link dachsNew                Operator
+hi def link dachsLambda             Statement
+hi def link dachsLambdaIn           Statement
 
 let b:current_syntax = "dachs"
