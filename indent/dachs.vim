@@ -25,7 +25,7 @@ let s:syn_group_undent
             \ = '^\s*\zs\<\%(end\|else\|elseif\|when\|ensure\|begin\)\>'
 
 function! s:should_skip(lnum, col)
-    return synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
+    return col > 0 && synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
 endfunction
 
 let s:prev = -1
@@ -38,18 +38,18 @@ function! GetDachsIndent(lnum)
         let s:prev = -1
 
         let col = match(prev_line, '\C' . s:syn_group_indent) + 1
-        if col > 0 && ! s:should_skip(prev_lnum, col)
+        if !s:should_skip(prev_lnum, col)
             return indent(prev_lnum) + &l:shiftwidth
         endif
 
         let col = match(prev_line, '\C' . s:syn_group_undent) + 1
-        if col > 0 && ! s:should_skip(a:lnum, col)
+        if !s:should_skip(a:lnum, col)
             return indent(prev_lnum)
         endif
     end
 
     let col = match(current_line, '\C' . '\<in\>\s*$') + 1
-    if col > 0 && ! s:should_skip(a:lnum, col)
+    if !s:should_skip(a:lnum, col)
         let oneline_idx = match(current_line, '->\|\<let\>')
         if s:prev == v:lnum ||
           \ (oneline_idx > 0 && oneline_idx < col-1)
@@ -60,7 +60,7 @@ function! GetDachsIndent(lnum)
     endif
 
     let col = match(current_line, '\C' . s:syn_group_undent) + 1
-    if col > 0 && ! s:should_skip(a:lnum, col)
+    if !s:should_skip(a:lnum, col)
         if s:prev == v:lnum
             return -1
         endif
