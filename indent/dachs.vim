@@ -32,8 +32,9 @@ let s:prev = -1
 function! GetDachsIndent(lnum)
     let prev_lnum = prevnonblank(a:lnum)
     let prev_line = getline(prev_lnum)
+    let current_line = getline('.')
 
-    if getline('.') =~# '^\s*$'
+    if current_line =~# '^\s*$'
         let s:prev = -1
 
         let col = match(prev_line, '\C' . s:syn_group_indent) + 1
@@ -47,16 +48,18 @@ function! GetDachsIndent(lnum)
         endif
     end
 
-    let col = match(getline('.'), '\C' . '\<in\s*$') + 1
+    let col = match(current_line, '\C' . '\<in\>\s*$') + 1
     if col > 0 && ! s:should_skip(a:lnum, col)
-        if s:prev == v:lnum
+        let oneline_idx = match(current_line, '->\|\<let\>')
+        if s:prev == v:lnum ||
+          \ (oneline_idx > 0 && oneline_idx < col-1)
             return -1
         endif
         let s:prev = v:lnum
         return indent(a:lnum) - &l:shiftwidth
     endif
 
-    let col = match(getline('.'), '\C' . s:syn_group_undent) + 1
+    let col = match(current_line, '\C' . s:syn_group_undent) + 1
     if col > 0 && ! s:should_skip(a:lnum, col)
         if s:prev == v:lnum
             return -1
