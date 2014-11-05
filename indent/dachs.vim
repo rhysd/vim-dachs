@@ -25,7 +25,7 @@ let s:syn_group_undent
             \ = '^\s*\zs\<\%(end\|else\|elseif\|when\|ensure\|begin\)\>'
 
 function! s:should_skip(lnum, col)
-    return col > 0 && synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
+    return col <= 0 || synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
 endfunction
 
 let s:prev = -1
