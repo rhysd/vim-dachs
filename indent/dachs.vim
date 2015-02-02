@@ -19,13 +19,13 @@ let s:syn_group_skip
             \ = '\<dachs\%(StringEscape\|StringSpecial\|StringDelimiter\|String\|SharpBang\|Comment\)\>'
 
 let s:syn_group_indent
-            \ = '\%(^\s*\%(\<in\s\+\)\=\zs\<\%(func\|proc\|if\|for\|else\|elseif\|case\|when\|unless\|let\|begin\|ensure\)\>\|\<do\>\%(\s*|[^|]\+|\)\=\_$\)'
+            \ = '\%(^\s*\%(\<in\s\+\)\=\zs\<\%(func\|proc\|if\|for\|else\|elseif\|case\|when\|unless\|let\|begin\|ensure\|class\|init\)\>\|\<do\>\%(\s*|[^|]\+|\)\=\_$\)'
 
 let s:syn_group_undent
             \ = '^\s*\zs\<\%(end\|else\|elseif\|when\|ensure\|begin\)\>'
 
 function! s:should_skip(lnum, col)
-    return col <= 0 || synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
+    return a:col <= 0 || synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
 endfunction
 
 let s:prev = -1
@@ -48,7 +48,7 @@ function! GetDachsIndent(lnum)
         endif
     end
 
-    let col = match(current_line, '\C' . '\<in\>\s*$') + 1
+    let col = match(current_line, '\C\<in\>\s$') + 1
     if !s:should_skip(a:lnum, col)
         let oneline_idx = match(current_line, '->\|\<let\>')
         if s:prev == v:lnum ||
