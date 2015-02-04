@@ -2,7 +2,7 @@ if exists("b:current_syntax")
     finish
 endif
 
-syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams,dachsClassInit
+syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams,dachsClassInit,dachsAccess
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
@@ -69,6 +69,11 @@ syn match dachsVar "\<var\>[?!']\@!"
 " Ctor
 syn region dachsClassInit matchgroup=dachsFuncDefine start="\<init\>" end="\<end\>" contains=ALLBUT,@dachsNotTop fold
 
+" Class
+syn match dachsClassName "\%(\<class\_s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsClassBlock display
+syn region dachsClassBlock matchgroup=dachsClassDefine start="\<class\>" matchgroup=dachsClassDefine end="\%(\<class\_s\+\)\@<!\<end\>" contains=TOP contains=dachsAccess fold
+syn match dachsAccess "[+-]" contained containedin=dachsClassBlock display
+
 let g:dachs_highlight_minlines = get(g:, 'dachs_highlight_minlines', 500)
 exec "syn sync minlines=" . g:dachs_highlight_minlines
 
@@ -98,5 +103,8 @@ hi def link dachsInitializeVarName  Identifier
 hi def link dachsNew                Operator
 hi def link dachsLambda             Statement
 hi def link dachsLambdaIn           Statement
+hi def link dachsClassDefine        Define
+hi def link dachsClassName          Type
+hi def link dachsAccess             Statement
 
 let b:current_syntax = "dachs"
