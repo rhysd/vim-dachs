@@ -4,7 +4,7 @@ endif
 
 setlocal nosmartindent
 setlocal indentexpr=GetDachsIndent(v:lnum)
-setlocal indentkeys=!^F,o,O,e,=end,=else,=elseif,=in\ ,0=when,0=ensure,0=begin
+setlocal indentkeys=!^F,o,O,e,=end,=else,=elseif,=in\ ,=+\ ,=-\ ,0=when,0=ensure,0=begin
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -28,6 +28,27 @@ function! s:should_skip(lnum, col)
     return a:col <= 0 || synIDattr(synID(a:lnum, a:col, 1), 'name') =~# s:syn_group_skip
 endfunction
 
+function! s:includes_access_specifier(lnum)
+    let c = match(getline(a:lnum), '^\s*\zs[+-]\s') + 1
+    return synIDattr(synID(a:lnum, c, 1), 'name') ==# 'dachsAccess'
+endfunction
+
+function! s:undent(lnum)
+    let diff = indent(a:lnum) - &l:shiftwidth
+
+    return diff
+endfunction
+
+function! s:indent(lnum)
+    let diff = indent(a:lnum) + &l:shiftwidth
+
+    if s:includes_access_specifier(a:lnum)
+        let diff += 2
+    endif
+
+    return diff
+endfunction
+
 let s:prev = -1
 function! GetDachsIndent(lnum)
     let prev_lnum = prevnonblank(a:lnum)
@@ -39,7 +60,7 @@ function! GetDachsIndent(lnum)
 
         let col = match(prev_line, '\C' . s:syn_group_indent) + 1
         if !s:should_skip(prev_lnum, col)
-            return indent(prev_lnum) + &l:shiftwidth
+            return s:indent(prev_lnum)
         endif
 
         let col = match(prev_line, '\C' . s:syn_group_undent) + 1
@@ -56,7 +77,7 @@ function! GetDachsIndent(lnum)
             return -1
         endif
         let s:prev = v:lnum
-        return indent(a:lnum) - &l:shiftwidth
+        return s:undent(a:lnum)
     endif
 
     let col = match(current_line, '\C' . s:syn_group_undent) + 1
@@ -65,7 +86,14 @@ function! GetDachsIndent(lnum)
             return -1
         endif
         let s:prev = v:lnum
-        return indent(a:lnum) - &l:shiftwidth
+        return s:undent(a:lnum)
+    endif
+
+    let col = match(current_line, '^\C\s*\zs[+-]\s') + 1
+    if !s:should_skip(a:lnum, col)
+        if s:includes_access_specifier(a:lnum)
+            return indent(a:lnum) - 2
+        endif
     endif
 
     return -1
