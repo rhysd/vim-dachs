@@ -56,13 +56,13 @@ syn match dachsInitialize "\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\%(\<var[?!']\@!\s\
 syn match dachsInitializeVarName "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsInitialize,dachsTypeLeader display
 
 " Comment
-syn match   dachsSharpBang "\%^#!.*" display
+syn match dachsSharpBang "\%^#!.*" display
 syn keyword dachsTodo FIXME NOTE TODO XXX contained
-syn match   dachsComment "#[^#]*#\=" contains=dachsSharpBang,dachsTodo,@Spell display
+syn match dachsComment "#[^#]*#\=" contains=dachsSharpBang,dachsTodo,@Spell display
 
 " Type
-syn match dachsTypeLeader "\%(\%(:\|as\)\s\+\)\@<=.*" contained contains=ALLBUT,@dachsNotTop transparent
-syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\)\>[!']\@!" contained contains=NONE containedin=dachsTypeLeader display
+syn match dachsTypeLeader "\%(\%(:\|as\)\s\+\)\@<=.*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
+syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\)\>[?!']\@!" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsVar "\<var\>[?!']\@!"
 
@@ -71,9 +71,10 @@ syn region dachsClassInit matchgroup=dachsFuncDefine start="\<init\>" end="\<end
 
 " Class
 syn match dachsClassName "\%(\<class\_s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsClassBlock display
-syn region dachsClassBlock matchgroup=dachsClassDefine start="\<class\>" matchgroup=dachsClassDefine end="\%(\<class\_s\+\)\@<!\<end\>" contains=TOP contains=dachsAccess fold
+syn region dachsClassBlock matchgroup=dachsClassDefine start="\<class\>" matchgroup=dachsClassDefine end="\%(\<class\_s\+\)\@<!\<end\>" contains=TOP contains=dachsAccess,dachsTypeLeader,dachsPseudoVar fold
 syn match dachsAccess "[+-]" contained containedin=dachsClassBlock display
 syn match dachsInstanceVar "@[_[:alpha:]][_[:alnum:]]*"
+syn match dachsPseudoVar "\<self\>[?!']\@!" contained containedin=dachsClassBlock display
 
 let g:dachs_highlight_minlines = get(g:, 'dachs_highlight_minlines', 500)
 exec "syn sync minlines=" . g:dachs_highlight_minlines
@@ -108,5 +109,6 @@ hi def link dachsClassDefine        Define
 hi def link dachsClassName          Type
 hi def link dachsAccess             Statement
 hi def link dachsInstanceVar        Identifier
+hi def link dachsPseudoVar          Constant
 
 let b:current_syntax = "dachs"
