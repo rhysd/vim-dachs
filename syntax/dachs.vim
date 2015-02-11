@@ -27,7 +27,8 @@ syn match dachsFloat "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\)\%(\.\d\
 syn match dachsBoolean "\<\%(true\|false\)\>[?!']\@!" display
 
 " Symbol
-syn match dachsSymbol ":[[:alnum:]=*/%+><&^|&!~_-]\+" display
+" Note: Avoid highlighting :=
+syn match dachsSymbol ":[[:alnum:]*/%+><&^|&!~_-][[:alnum:]=*/%+><&^|&!~_-]*" display
 
 " Operators
 if exists('g:dachs_highlight_operators')
