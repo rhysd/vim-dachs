@@ -21,9 +21,13 @@ syn region  dachsString matchgroup=dachsStringDelimiter start="\"" end="\"" skip
 syn match dachsInteger "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\)u\=\>" display
 syn match dachsFloat "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\)\.\d\+\>" display
 syn match dachsFloat "\%(\%(\w\|[]})\"']\s*\)\@<!-\)\=\<\%(0\|[1-9]\d*\)\%(\.\d\+\)\=\%([eE][-+]\=\d\+\)\>" display
+" TODO: add 0x, 0o and 0b literals
 
 " Boolean
 syn match dachsBoolean "\<\%(true\|false\)\>[?!']\@!" display
+
+" Symbol
+syn match dachsSymbol ":[[:alnum:]=*/%+><&^|&!~_-]\+" display
 
 " Operators
 if exists('g:dachs_highlight_operators')
@@ -96,6 +100,7 @@ hi def link dachsCharacter          Character
 hi def link dachsStringEscape       Special
 hi def link dachsStringDelimiter    Delimiter
 hi def link dachsString             String
+hi def link dachsSymbol             Constant
 hi def link dachsType               Type
 hi def link dachsBuiltinTypes       dachsType
 hi def link dachsConditional        Conditional
