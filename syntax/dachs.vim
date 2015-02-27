@@ -9,8 +9,8 @@ syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>"
 syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*'*" contained contains=NONE display
 
 " Character
-syn match dachsCharacterEscape "\\[bfnr'\\]" contained display
-syn match dachsCharacter "'\%([^\\]\|\\[bfnr'\\]\)'" contained contains=dachsCharacterEscape display
+syn match dachsCharacterEscape "\\[bfnr0'\\]" contained display
+syn match dachsCharacter "'\%([^\\]\|\\[bfnr0'\\]\)'" contained contains=dachsCharacterEscape display
 
 " String
 syn match   dachsStringEscape "\\[bfnr"\\]" contained display
@@ -39,7 +39,7 @@ syn match dachsNew "\<new\>[?!']\@!" contained
 
 
 " Control
-syn match  dachsControl "\<\%(ret\|next\|break\|as\|do\)\>[?!']\@!" contained display
+syn match  dachsControl "\<\%(ret\|next\|break\|as\|do\|begin\)\>[?!']\@!" contained display
 syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<case[?!']\@!\>" end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|when\)\>[?!']\@!" contained containedin=dachsCaseExpression display
 syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
@@ -48,11 +48,11 @@ syn region dachsIfExprThen matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\
 syn region dachsIfExprElse start="\%(\<then\>\_s\+\)\@<=\zs" matchgroup=dachsConditional end="\<else\>" contained containedin=NONE contains=ALLBUT,@dachsNotTop
 syn region dachsRepeatStatement matchgroup=dachsRepeat start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match dachsRepeatForIn "\%(\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!\%(.\%(\<in\>\)\@!\)*\s\)\@<=\<in\>" contained containedin=dachsRepeatStatement display
-syn region dachsDoBlock matchgroup=dachsControl start="\<do\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
-syn region dachsDoBlockParameterList start="\%(\%(\<do\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
+syn region dachsDoBlock matchgroup=dachsControl start="\<\%(do\|begin\)\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
+syn region dachsDoBlockParameterList start="\%(\%(\<\%(do\|begin\)\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
 syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
 syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<in\>" contained contains=ALLBUT,@dachsNotTop
-" syn region dachsLambdaOneLine matchgroup=dachsControl start="->" matchgroup=dachsControl end="\<in\>\|.\%(\<do\>\)\@=" oneline contained contains=ALLBUT,@dachsNotTop fold
+" syn region dachsLambdaOneLine matchgroup=dachsControl start="->" matchgroup=dachsControl end="\<in\>\|.\%(\<\%(do\|begin\)\>\)\@=" oneline contained contains=ALLBUT,@dachsNotTop fold
 syn match dachsLambda "->" display
 syn match dachsLambdaIn "\%(->.\+\)\@<=\<in\>" display
 
