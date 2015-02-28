@@ -51,7 +51,7 @@ syn match dachsRepeatForIn "\%(\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!
 syn region dachsDoBlock matchgroup=dachsControl start="\<\%(do\|begin\)\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn region dachsDoBlockParameterList start="\%(\%(\<\%(do\|begin\)\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
 syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
-syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<in\>" contained contains=ALLBUT,@dachsNotTop
+syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<\%(in\|\zebegin\)\>" contained contains=ALLBUT,@dachsNotTop
 " syn region dachsLambdaOneLine matchgroup=dachsControl start="->" matchgroup=dachsControl end="\<in\>\|.\%(\<\%(do\|begin\)\>\)\@=" oneline contained contains=ALLBUT,@dachsNotTop fold
 syn match dachsLambda "->" display
 syn match dachsLambdaIn "\%(->.\+\)\@<=\<in\>" display
