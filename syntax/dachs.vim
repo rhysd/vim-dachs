@@ -2,6 +2,8 @@ if exists("b:current_syntax")
     finish
 endif
 
+syn keyword dachsImport import
+
 syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams,dachsClassInit,dachsAccess
 
 " Function
@@ -116,5 +118,6 @@ hi def link dachsClassName          Type
 hi def link dachsAccess             Statement
 hi def link dachsInstanceVar        Identifier
 hi def link dachsPseudoVar          Constant
+hi def link dachsImport             PreProc
 
 let b:current_syntax = "dachs"
