@@ -68,8 +68,9 @@ syn keyword dachsTodo FIXME NOTE TODO XXX contained
 syn match dachsComment "#[^#]*#\=" contains=dachsSharpBang,dachsTodo,@Spell display
 
 " Type
-syn match dachsTypeLeader "\%(\%(:\|as\)\s\+\)\@<=.*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
-syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\)\>[?!']\@!" contained contains=NONE containedin=dachsTypeLeader display
+syn match dachsTypeLeader "\%(\%(:\|\<as\)\s\+\)\@<=.*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
+syn match dachsTypeLeader "\%(\<new\s\+\)\@<=[^{]*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
+syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\|static_array\|pointer\)\>[?!']\@!" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsVar "\<var\>[?!']\@!"
 
