@@ -66,6 +66,7 @@ syn match dachsInitializeVarName "[_[:alpha:]][_[:alnum:]]*" contained contained
 syn match dachsSharpBang "\%^#!.*" display
 syn keyword dachsTodo FIXME NOTE TODO XXX contained
 syn match dachsComment "#[^#]*#\=" contains=dachsSharpBang,dachsTodo,@Spell display
+syn region dachsComment start="#{" end="}#" contains=dachsTodo,@Spell
 
 " Type
 syn match dachsTypeLeader "\%(\%(:\|\<as\)\s\+\)\@<=.*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
