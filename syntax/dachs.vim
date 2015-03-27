@@ -71,7 +71,7 @@ syn region dachsComment start="#{" end="}#" contains=dachsTodo,@Spell
 " Type
 syn match dachsTypeLeader "\%(\%(:\|\<as\)\s\+\)\@<=.*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
 syn match dachsTypeLeader "\%(\<new\s\+\)\@<=[^{]*" contained containedin=dachsClassBlock contains=ALLBUT,@dachsNotTop transparent
-syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\|static_array\|pointer\)\>[?!']\@!" contained contains=NONE containedin=dachsTypeLeader display
+syn match dachsBuiltinTypes "\<\%(int\|float\|char\|string\|uint\|bool\|symbol\|static_array\|pointer\|typeof\)\>[?!']\@!" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" contained contains=NONE containedin=dachsTypeLeader display
 syn match dachsVar "\<var\>[?!']\@!"
 
