@@ -8,7 +8,7 @@ syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFun
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
-syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\%(\<[_[:alpha:]][_[:alnum:]]*'*\|>>\|<<\|<=\|>=\|==\|!=\|&&\|||\|\*\|/\|%\|<\|>\|&\|\^\||\|+\|-\|\~\|!\|\[]=\|\[]\)" contained contains=NONE display
+syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\%(\<[_[:alpha:]][_[:alnum:]]*'*\|>>\|<<\|<=\|>=\|==\|!=\|&&\|||\|\*\|/\|%\|<\|>\|&\|\^\||\|+\|-\|\~\|!\|\[]=\|\[]\|:=\)" contained contains=NONE display
 
 " Character
 syn match dachsCharacterEscape "\\[bfnr0'\\]" contained display
