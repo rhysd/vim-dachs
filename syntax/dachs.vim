@@ -33,10 +33,6 @@ syn match dachsBoolean "\<\%(true\|false\)\>[?!']\@!" display
 syn match dachsSymbol ":[[:alnum:]*/%+><&^|&!~_-][[:alnum:]=*/%+><&^|&!~_-]*" display
 
 " Operators
-if exists('g:dachs_highlight_operators')
-    syn match dachsOperator "[~!^&|*/%:<+-]\|=\@<!>\|<=\|>=\|==\|<<\|>>\|:=\|=\|\.\.\.\|\.\." display
-    syn match dachsOperator "-=\|/=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!=\|\^=" display
-endif
 syn match dachsNew "\<new\>[?!']\@!" contained
 
 
