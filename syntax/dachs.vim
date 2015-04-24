@@ -11,11 +11,11 @@ syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>"
 syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\%(\<[_[:alpha:]][_[:alnum:]]*'*\|>>\|<<\|<=\|>=\|==\|!=\|&&\|||\|\*\|/\|%\|<\|>\|&\|\^\||\|+\|-\|\~\|!\|\[]=\|\[]\)" contained contains=NONE display
 
 " Character
-syn match dachsCharacterEscape "\\[bfnr0'\\]" contained display
-syn match dachsCharacter "'\%([^\\]\|\\[bfnr0'\\]\)'" contained contains=dachsCharacterEscape display
+syn match dachsCharacterEscape "\\[bfnrtve0'\\]" contained display
+syn match dachsCharacter "'\%([^\\]\|\\[bfnrtve0'\\]\)'" contained contains=dachsCharacterEscape display
 
 " String
-syn match   dachsStringEscape "\\[bfnr"\\]" contained display
+syn match   dachsStringEscape "\\[bfnrtve"\\]" contained display
 syn cluster dachsStringSpecial contains=dachsStringEscape
 syn region  dachsString matchgroup=dachsStringDelimiter start="\"" end="\"" skip="\\\\\|\\\"" contains=@dachsStringSpecial,@Spell
 
