@@ -7,8 +7,8 @@ syn keyword dachsImport import
 syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams,dachsClassSpecialFunc,dachsAccess
 
 " Function
-syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\)\>" end="\%(\<\%(proc\|func\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
-syn match dachsFuncId "\%(\<\%(func\|proc\)\>\s\+\)\@<=\%(\<[_[:alpha:]][_[:alnum:]]*'*\|>>\|<<\|<=\|>=\|==\|!=\|&&\|||\|\*\|/\|%\|<\|>\|&\|\^\||\|+\|-\|\~\|!\|\[]=\|\[]\)" contained contains=NONE display
+syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\|cast\)\>" end="\%(\<\%(proc\|func\|cast\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
+syn match dachsFuncId "\%(\<\%(func\|proc\|cast\)\>\s\+\)\@<=\%(\<[_[:alpha:]][_[:alnum:]]*'*\|>>\|<<\|<=\|>=\|==\|!=\|&&\|||\|\*\|/\|%\|<\|>\|&\|\^\||\|+\|-\|\~\|!\|\[]=\|\[]\)" contained contains=NONE display
 
 " Character
 syn match dachsCharacterEscape "\\[bfnrtve0'\\]" contained display
@@ -72,7 +72,7 @@ syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" conta
 syn match dachsVar "\<var\>[?!']\@!"
 
 " Special function
-syn region dachsClassSpecialFunc matchgroup=dachsFuncDefine start="\<\%(init\|copy\)\>" end="\<end\>" contains=ALLBUT,@dachsNotTop fold
+syn region dachsClassSpecialFunc matchgroup=dachsFuncDefine start="\<\%(init\|copy\|cast\)\>" end="\<end\>" contains=ALLBUT,@dachsNotTop fold
 
 " Class
 syn match dachsClassName "\%(\<class\_s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsClassBlock display
