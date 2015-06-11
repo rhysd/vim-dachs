@@ -4,7 +4,7 @@ endif
 
 syn keyword dachsImport import
 
-syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsIfExprElse,dachsDoBlockHeader,dachsDoBlockParams,dachsClassSpecialFunc,dachsAccess
+syn cluster dachsNotTop contains=dachsCharacterEscape,dachsStringEscape,dachsFuncBlock,dachsConditional,dachsTodo,dachsBuiltinTypes,dachsInitializeVar,dachsInitializeVarName,dachsDoBlockHeader,dachsDoBlockParams,dachsClassSpecialFunc,dachsAccess
 
 " Function
 syn region dachsFuncBlock matchgroup=dachsFuncDefine start="\<\%(func\|proc\|cast\)\>" end="\%(\<\%(proc\|func\|cast\)\_s\+\)\@<!\<end\>" contains=ALLBUT,@dachsNotTop fold
@@ -38,18 +38,16 @@ syn match dachsNew "\<new\>[?!']\@!" contained
 
 " Control
 syn match  dachsControl "\<\%(ret\|next\|break\|as\|do\|begin\)\>[?!']\@!" contained display
-syn region dachsCaseExpression matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<case[?!']\@!\>" end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
+syn region dachsCaseExpression matchgroup=dachsConditional start="\<case[?!']\@!\>" end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|when\)\>[?!']\@!" contained containedin=dachsCaseExpression display
-syn region dachsIfStatement matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
+syn region dachsIfStatement matchgroup=dachsConditional start="\<\%(if\|unless\)\>"  end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match  dachsConditional "\<\%(then\|else\|elseif\)\>[?!']\@!" contained containedin=dachsIfStatement display
-syn region dachsIfExprThen matchgroup=dachsConditional start="\%(\%(^\|;\)\s*\)\@<!\<\%(if\|unless\)\>[?!']\@!" matchgroup=dachsConditional end="\<then[!?']\@!\>" end="\ze\%(;\|$\)" oneline contained contains=ALLBUT,@dachsNotTop nextgroup=dachsIfExprElse skipwhite
-syn region dachsIfExprElse start="\%(\<then\>\_s\+\)\@<=\zs" matchgroup=dachsConditional end="\<else\>" contained containedin=NONE contains=ALLBUT,@dachsNotTop
 syn region dachsRepeatStatement matchgroup=dachsRepeat start="\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!" matchgroup=dachsRepeat end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
 syn match dachsRepeatForIn "\%(\%(\%(^\|;\)\s*\|\<in\>\_s\+\)\@<=\<for\>[?!']\@!\%(.\%(\<in\>\)\@!\)*\s\)\@<=\<in\>" contained containedin=dachsRepeatStatement display
 syn region dachsDoBlock matchgroup=dachsControl start="\<\%(do\|begin\)\>[?!']\@!" matchgroup=dachsControl end="\<end\>" contained contains=ALLBUT,@dachsNotTop fold
-syn region dachsDoBlockParameterList start="\%(\%(\<\%(do\|begin\)\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
+syn region dachsDoBlockParameterList start="\%(\%(\<do\|{\)\s*\)\@<=|" end="|" oneline contains=dachsDoBlockParams display
 syn match dachsDoBlockParams "[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsDoBlockHeader contains=ALLBUT,@dachsNotTop display
-syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<\%(in\|\zebegin\)\>" contained contains=ALLBUT,@dachsNotTop
+syn region dachsLetInStatement matchgroup=dachsControl start="\<let\>[?!']\@!" matchgroup=dachsControl end="\<in\>" contained contains=ALLBUT,@dachsNotTop
 " syn region dachsLambdaOneLine matchgroup=dachsControl start="->" matchgroup=dachsControl end="\<in\>\|.\%(\<\%(do\|begin\)\>\)\@=" oneline contained contains=ALLBUT,@dachsNotTop fold
 syn match dachsLambda "->" display
 syn match dachsLambdaIn "\%(->.\+\)\@<=\<in\>" display
@@ -72,7 +70,7 @@ syn match dachsBuiltinTypes "\%(\%(:\|as\)\s.*\)\@<=\<range\>\%(\s*(\)\@=" conta
 syn match dachsVar "\<var\>[?!']\@!"
 
 " Special function
-syn region dachsClassSpecialFunc matchgroup=dachsFuncDefine start="\<\%(init\|copy\|cast\)\>" end="\<end\>" contains=ALLBUT,@dachsNotTop fold
+syn region dachsClassSpecialFunc matchgroup=dachsFuncDefine start="\%(^\s*\)\@<=\<\%(init\|copy\|cast\)\>" end="\<end\>" contains=ALLBUT,@dachsNotTop fold
 
 " Class
 syn match dachsClassName "\%(\<class\_s\+\)\@<=\<[_[:alpha:]][_[:alnum:]]*" contained containedin=dachsClassBlock display
